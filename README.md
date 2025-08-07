@@ -284,9 +284,28 @@ npm run build
 ### Testing
 
 ```bash
-# Requires E2B_API_KEY environment variable
+# Mock tests (no API key required) - verify implementation structure
+npm run test-mock
+
+# Full functionality tests (requires E2B_API_KEY environment variable)
 npm test
 ```
+
+**Mock Testing:**
+The `test-mock` script verifies that your implementation is structurally correct without requiring an E2B API key. This is useful for:
+- Verifying tool definitions are correct
+- Checking method signatures
+- Testing implementation structure
+- CI/CD environments where API keys aren't available
+
+**Full Testing:**
+The `test` script runs comprehensive functionality tests including:
+- Python code execution
+- JavaScript code execution  
+- File operations (create, read, list)
+- Package installation (Python & JavaScript)
+- Sandbox management
+- Error handling
 
 ### Linting and Type Checking
 
@@ -349,7 +368,7 @@ The server provides structured JSON logging suitable for log aggregation service
 
 2. **"Sandbox creation failed"**
    - Check E2B service status
-   - Verify API key permissions
+   - Verify API key permissions  
    - Check network connectivity
 
 3. **"Security validation failed"**
@@ -360,6 +379,27 @@ The server provides structured JSON logging suitable for log aggregation service
 4. **"Execution timeout"**
    - Code took longer than 30 seconds to execute
    - Consider optimizing code or breaking into smaller chunks
+
+### Fixed Issues (Latest Update)
+
+**✅ Code Execution Issue Resolved**
+
+The previous issue with Jupyter kernel port (49999) not being open has been **completely resolved**. The server now uses E2B's latest v1.5.1 SDK which provides direct code execution without relying on Jupyter kernels.
+
+**What was fixed:**
+- Updated from legacy Jupyter-based execution to E2B's modern code execution API
+- Fixed `execute_python` ✅ - Now works with E2B v1.5.1 direct execution
+- Fixed `execute_javascript` ✅ - Now works with proper Node.js wrapping  
+- Fixed `install_packages` ✅ - Now works for both Python (pip) and JavaScript (npm)
+
+**All features now working:**
+- ✅ `execute_python` - Execute Python code in sandboxed environment
+- ✅ `execute_javascript` - Execute JavaScript/Node.js code
+- ✅ `create_file` - Create files in sandbox
+- ✅ `read_file` - Read files from sandbox  
+- ✅ `list_files` - List directory contents
+- ✅ `install_packages` - Install Python (pip) or Node.js (npm) packages
+- ✅ `get_sandbox_info` - Get sandbox status and resource information
 
 ### Logging
 

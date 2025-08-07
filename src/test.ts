@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// Basic test script to validate the MCP server
+// Comprehensive test script to validate the MCP server
 import { SandboxService } from './sandbox-manager.js';
 import { E2BTools } from './tools.js';
 import { logger } from './logger.js';
@@ -25,9 +25,16 @@ async function testBasicFunctionality() {
     // Test Python execution
     logger.info('Testing Python code execution...');
     const pythonResult = await e2bTools.executeTool('execute_python', {
-      code: 'print("Hello from Python!")\nresult = 2 + 2\nprint(f"2 + 2 = {result}")'
+      code: 'print("Hello from Python!")\nresult = 2 + 2\nprint(f"2 + 2 = {result}")\nresult'
     });
     logger.info('Python execution result:', pythonResult);
+
+    // Test JavaScript execution
+    logger.info('Testing JavaScript code execution...');
+    const jsResult = await e2bTools.executeTool('execute_javascript', {
+      code: 'console.log("Hello from JavaScript!");\nconst result = 2 + 2;\nconsole.log(`2 + 2 = ${result}`);\nresult;'
+    });
+    logger.info('JavaScript execution result:', jsResult);
 
     // Test file creation and reading
     logger.info('Testing file operations...');
@@ -46,6 +53,22 @@ async function testBasicFunctionality() {
     logger.info('Testing file listing...');
     const listFilesResult = await e2bTools.executeTool('list_files', {});
     logger.info('File listing result:', listFilesResult);
+
+    // Test Python package installation
+    logger.info('Testing Python package installation...');
+    const pyPackageResult = await e2bTools.executeTool('install_packages', {
+      packages: ['requests'],
+      language: 'python'
+    });
+    logger.info('Python package installation result:', pyPackageResult);
+
+    // Test JavaScript package installation
+    logger.info('Testing JavaScript package installation...');
+    const jsPackageResult = await e2bTools.executeTool('install_packages', {
+      packages: ['lodash'],
+      language: 'javascript'
+    });
+    logger.info('JavaScript package installation result:', jsPackageResult);
 
     // Test sandbox info
     logger.info('Testing sandbox info...');

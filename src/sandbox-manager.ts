@@ -22,7 +22,8 @@ export class SandboxService {
     try {
       logger.info(`Creating new ${language} sandbox`);
       
-      const sandbox = await Sandbox.create('base', {
+      // Create sandbox with E2B API key from environment
+      const sandbox = await Sandbox.create({
         apiKey: process.env.E2B_API_KEY,
         timeoutMs: 60000 // 60 seconds timeout for sandbox initialization
       });

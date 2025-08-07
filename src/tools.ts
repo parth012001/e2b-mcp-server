@@ -195,9 +195,7 @@ export class E2BTools {
     
     const startTime = Date.now();
     try {
-      const result = await sandbox.sandbox.runCode(code, {
-        timeoutMs: EXECUTION_TIMEOUT
-      });
+      const result = await sandbox.sandbox.runCode(code);
       
       const executionTime = Date.now() - startTime;
       
@@ -206,10 +204,10 @@ export class E2BTools {
 
       // Process stdout/stderr logs
       if (result.logs) {
-        if (result.logs.stdout.length > 0) {
+        if (result.logs.stdout && result.logs.stdout.length > 0) {
           output += result.logs.stdout.join('\n') + '\n';
         }
-        if (result.logs.stderr.length > 0) {
+        if (result.logs.stderr && result.logs.stderr.length > 0) {
           output += result.logs.stderr.join('\n') + '\n';
         }
       }
@@ -226,7 +224,9 @@ export class E2BTools {
       // Handle execution errors
       if (result.error) {
         output += `Error: ${result.error.name}: ${result.error.value}\n`;
-        output += result.error.traceback + '\n';
+        if (result.error.traceback) {
+          output += result.error.traceback + '\n';
+        }
         hasError = true;
       }
 
@@ -279,9 +279,9 @@ export class E2BTools {
     
     const startTime = Date.now();
     try {
+      // Execute JavaScript code using the proper language context
       const result = await sandbox.sandbox.runCode(code, {
-        language: 'javascript',
-        timeoutMs: EXECUTION_TIMEOUT
+        language: 'javascript'
       });
       
       const executionTime = Date.now() - startTime;
@@ -291,10 +291,10 @@ export class E2BTools {
 
       // Process stdout/stderr logs
       if (result.logs) {
-        if (result.logs.stdout.length > 0) {
+        if (result.logs.stdout && result.logs.stdout.length > 0) {
           output += result.logs.stdout.join('\n') + '\n';
         }
-        if (result.logs.stderr.length > 0) {
+        if (result.logs.stderr && result.logs.stderr.length > 0) {
           output += result.logs.stderr.join('\n') + '\n';
         }
       }
@@ -311,7 +311,9 @@ export class E2BTools {
       // Handle execution errors
       if (result.error) {
         output += `Error: ${result.error.name}: ${result.error.value}\n`;
-        output += result.error.traceback + '\n';
+        if (result.error.traceback) {
+          output += result.error.traceback + '\n';
+        }
         hasError = true;
       }
 
@@ -486,8 +488,7 @@ try {
       }
       
       const result = await sandbox.sandbox.runCode(installCommand, {
-        language,
-        timeoutMs: 60000 // 1 minute timeout for package installation
+        language: language === 'javascript' ? 'javascript' : 'python'
       });
       
       let output = '';
@@ -495,10 +496,10 @@ try {
 
       // Process stdout/stderr logs
       if (result.logs) {
-        if (result.logs.stdout.length > 0) {
+        if (result.logs.stdout && result.logs.stdout.length > 0) {
           output += result.logs.stdout.join('\n') + '\n';
         }
-        if (result.logs.stderr.length > 0) {
+        if (result.logs.stderr && result.logs.stderr.length > 0) {
           output += result.logs.stderr.join('\n') + '\n';
         }
       }
@@ -515,7 +516,9 @@ try {
       // Handle execution errors
       if (result.error) {
         output += `Error: ${result.error.name}: ${result.error.value}\n`;
-        output += result.error.traceback + '\n';
+        if (result.error.traceback) {
+          output += result.error.traceback + '\n';
+        }
         hasError = true;
       }
 
