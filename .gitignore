@@ -52,4 +52,4 @@ yarn.lock
 .yarn-integrity
 
 # TypeScript cache
-*.tsbuildinfo
+*.tsbuildinfo.env.example
